@@ -1,0 +1,29 @@
+std::vector<Extension> get_arc_extensions() {
+    std::vector<Extension> extensions;
+    std::string base_path = "/Users/<username>/Library/Application Support/Arc/User Data/";
+
+    // Iterate through profiles
+    for (int i = 1; i <= n; ++i) { // n is the number of profiles
+        std::string profile_path = base_path + "Profile " + std::to_string(i) + "/Extensions";
+        
+        // Check if profile directory exists
+        if (boost::filesystem::exists(profile_path)) {
+            for (const auto& entry : boost::filesystem::directory_iterator(profile_path)) {
+                // Assuming each entry is an extension directory
+                if (boost::filesystem::is_directory(entry)) {
+                    Extension ext;
+                    ext.uid = get_uid(entry); // Function to fetch unique identifier
+                    ext.name = get_extension_name(entry); // Function to get extension name
+                    ext.version = get_extension_version(entry); // Function to get extension version
+                    ext.active = check_if_active(entry); // Function to determine if active
+                    ext.disabled = check_if_disabled(entry); // Function to determine if disabled
+                    
+                    extensions.push_back(ext); // Add extension to the vector
+                }
+            }
+        }
+    }
+    return extensions; // Return the collected extensions
+}
+
+I have made the Necessary changes in the code could you please review it.
